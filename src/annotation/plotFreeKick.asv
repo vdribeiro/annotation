@@ -1,0 +1,89 @@
+function [ output_args ] = plotFreeKick( path1, pathbase )
+%UNTITLED Summary of this function goes here
+%   Detailed explanation goes here
+
+    close all;
+    %path1 = 'C:\Users\Tosh\Desktop\rvau\images\ronaldo.jpg';
+    pathbase = 'C:\Users\Tosh\Desktop\rvau\images\field.jpg';
+
+    im1 = imread(path1);
+    image = im1;
+
+    %calcular homografia e transformação para imagem base
+    [homog, tform, input_points, base_points] = homograph(path1,pathbase); 
+    
+    
+    imshow(im1);
+    
+    %pedir ponto da bola
+    [x, y] = ginput(1);
+    
+    %projectar o ponto na imagem base (field)
+    [x1,y1] = tformfwd(tform, x, y);
+    
+    %definir 9.15m em pixeis da imagem base, sabe-se que 67 = 9.15 metros
+    %reais
+    radius = 67;
+    
+    %calcular pontos do circulo na imagem base, sem desenhar
+    points = MidpointCircle(radius, x1, y1, 'r', false);
+
+    
+    figure, imshow(im1);
+    hold on;
+    
+    %projectar e desenhar os pontos obtidos do circulo na imagem original
+    dimpoints = size(points);
+    pointsx = zeros(1, dimpoints);
+    pointsy = zeros(1, dimpoints);
+    
+    for c = 1:dimpoints
+        [xcircle, ycircle] = tforminv(tform, double(points(c, 1)), double(points(c, 2)));
+        plot(xcircle,  ycircle, 'LineWidth',2, 'Color', 'r');
+        pointsx(c) = xcircle;
+        pointsy(c) = ycircle;
+        patch(xcircle, ycircle, 'g');
+    end
+    
+    %patch(pointsx, pointsy, 'g');
+    
+    
+    
+    imbase = imread(pathbase);
+    goalcenterpoint = [1 size(imbase, 1)/2];
+    
+    goalcenterprojection = tforminv(tform, goalcenterpoint(1), goalcenterpoint(2));
+    
+    %plot(goalcenterprojection(1), goalcenterprojection(2), '-rs');
+    
+    %calculate the distance between ball point and goal center
+    cateto1pixels = x1 - 1;    
+    cateto1metros = cateto1pixels * 9.15 / 67;
+    
+    cateto2pixels = y1 - goalcenterpoint(2);
+    cateto2metros = cateto2pixels * 9.15 / 67;
+    
+    dist = sqrt( cateto1metros*cateto1metros + cateto2metros*cateto2metros );
+    
+    draw_line2(goalcenterprojection(1),goalcenterprojection(2),x,y,'r', background);
+    text(size(im1,2)/4, size(im1,1)/10, ['Distância: ',num2str(dist), 'm'],...
+	'HorizontalAlignment','center',... 
+	'BackgroundColor','y');
+    
+    
+
+    patch([xaux1,xaux2,0],[yaux1,yaux2,0], 'r', 'FaceAlpha', 0.3, 'EdgeColor' , 'none');
+
+    
+    hold off;
+    
+    %figure; 
+    %imshow(imbase);
+    %hold on
+    
+    %plot(1,size(imbase, 1)/2 , '-rs');
+    
+    %hold off;
+    
+end
+

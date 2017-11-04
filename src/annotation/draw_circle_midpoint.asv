@@ -1,0 +1,24 @@
+function ret = draw_circle_midpoint( x0, y0, radius, color)
+%draw_circle_midpoint draws a circle with midpoint algorithm
+
+    x = 0;
+    y = radius;
+    p = (5 - radius*4)/4;
+
+    aux_circle(xCenter, yCenter, x, y, pix);
+    while (x < y) {
+        x++;
+        if (p < 0) {
+            p += 2*x+1;
+        } else {
+            y--;
+            p += 2*(x-y)+1;
+        }
+        circlePoints(xCenter, yCenter, x, y, pix);
+    }
+
+
+
+
+end
+

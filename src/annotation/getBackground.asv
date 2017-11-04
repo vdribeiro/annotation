@@ -1,0 +1,8 @@
+function [ background ] = getBackground( path )
+
+    imread(path);
+    
+    
+
+end
+

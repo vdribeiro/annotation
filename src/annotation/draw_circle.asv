@@ -1,0 +1,22 @@
+function ret = draw_circle( x0, y0, radius, color)
+%draw_circle plots a circle
+
+
+    r2 = radius * radius;
+    
+    plot(y,x, 'Color', color);
+    plot(x0, y0 + radius, 'Color', color);
+    plot(x0, y0 - radius, 'Color', color);
+    
+    for x = 1; x <= radius; x++) {
+        y = (int) (Math.sqrt(r2 - x*x) + 0.5);
+        plot( xCenter + x, yCenter + y, 'Color', color);
+        plot( xCenter + x, yCenter - y, 'Color', color);
+        plot( xCenter - x, yCenter + y, 'Color', color);
+        plot( xCenter - x, yCenter - y, 'Color', color);
+    }
+
+
+
+end
+

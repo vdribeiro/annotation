@@ -1,0 +1,76 @@
+function [ output_args ] = draw_line3( x0,y0,x1,y1,color,background)
+
+    %y = mx + b
+    m = y1 - y0 / x1 - x0;
+    b = y0 - m * x0;
+    
+
+    %vertical line 
+    if x1 == x2
+        if y0 > y1
+             
+            for i = y1 : y0
+                x = round( (i - b) / m ); 
+                plot(x,i, 'Color', color);
+            end
+            
+        else
+            
+            for i = y1 : y0
+                x = round( (i - b) / m ); 
+                plot(x,i, 'Color', color);
+            end
+            
+        end
+        
+    %horizontal line
+    elseif y1 == y2
+        if x0 > x1
+             
+            for i = x1 : x0
+                y = round( m * i + b); 
+                plot(i,y, 'Color', color);
+            end
+            
+        else
+            
+            for i = x1 : x0
+                y = round( m * i + b);  
+                plot(i,y, 'Color', color);
+            end
+            
+        end
+        
+    %diagonal line
+    else
+        
+        if m >= 1
+            if x0 > x1
+
+                for i = x1 : x0
+                    y = round( m * i + b); 
+                    plot(i,y, 'Color', color);
+                end
+
+            else
+
+                for i = x1 : x0
+                    y = round( m * i + b);  
+                    plot(i,y, 'Color', color);
+                end
+
+            end
+            
+            
+            
+        else
+            
+        end
+        
+    end
+    
+        
+    
+    
+end
+
